@@ -5,11 +5,15 @@ services:
 before_install: 
   - docker build -t tamiilore/react-test -f ./client/Dockerfile.dev ./client
 
-script: 
-  - docker run tamiilore/react-test npm test -- --coverage
-
 after_success: 
   - docker build -t tamiilore/multi-client ./client
   - docker build -t tamiilore/multi-nginx ./nginx
   - docker build -t tamiilore/multi-server ./server
   - docker build -t tamiilore/multi-worker ./worker
+  #login to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  #Take the image and push them to dicker
+  - docker push tamiilore/multi-client
+  - docker push tamiilore/multi-nginx
+  - docker push tamiilore/multi-server
+  - docker push tamiilore/multi-worker

@@ -3,8 +3,11 @@ sudo: required
 services:
   - docker
 
-# before_install: 
-#   - docker build -t tamiilore/react-test -f ./client/Dockerfile.dev ./client
+before_install: 
+  - docker build -t tamiilore/react-test -f ./client/Dockerfile.dev ./client
+
+script: 
+  - docker run tamiilore/react-test npm test -- --coverage
 
 after_success: 
   - docker build -t tamiilore/multi-client ./client
